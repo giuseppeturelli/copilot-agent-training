@@ -35,7 +35,7 @@ def api_root(request):
         base = f"https://{codespace_name}-8000.app.github.dev/api/"
     else:
         # Fallback to the current host (likely localhost) using http to avoid HTTPS cert issues locally
-        base = f"http://{request.get_host()}/api/"
+        base = request.build_absolute_uri('/api/')
 
     return Response({
         'users': base + 'users/',
