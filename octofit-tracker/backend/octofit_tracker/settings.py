@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,12 @@ SECRET_KEY = 'django-insecure-tz&uy=bjg!blzlj@z%xb1r^^w$^5oht_^y+3)mje&%4r0q-9zd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+# Allow localhost and codespace domain derived from CODESPACE_NAME
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+_CODESPACE_NAME = os.environ.get('CODESPACE_NAME')
+if _CODESPACE_NAME:
+    ALLOWED_HOSTS.append(f"{_CODESPACE_NAME}-8000.app.github.dev")
 
 
 # Application definition

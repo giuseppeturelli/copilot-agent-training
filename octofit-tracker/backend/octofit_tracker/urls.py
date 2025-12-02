@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import os
 from rest_framework.routers import DefaultRouter
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -29,16 +30,23 @@ router.register(r'leaderboard', LeaderboardViewSet, basename='leaderboard')
 
 @api_view(['GET'])
 def api_root(request):
+    codespace_name = os.environ.get('CODESPACE_NAME')
+    if codespace_name:
+        base = f"https://{codespace_name}-8000.app.github.dev/api/"
+    else:
+        # Fallback to the current host (likely localhost) using http to avoid HTTPS cert issues locally
+        base = f"http://{request.get_host()}/api/"
+
     return Response({
-        'users': request.build_absolute_uri('/users/'),
-        'teams': request.build_absolute_uri('/teams/'),
-        'activities': request.build_absolute_uri('/activities/'),
-        'workouts': request.build_absolute_uri('/workouts/'),
-        'leaderboard': request.build_absolute_uri('/leaderboard/'),
+        'users': base + 'users/',
+        'teams': base + 'teams/',
+        'activities': base + 'activities/',
+        'workouts': base + 'workouts/',
+        'leaderboard': base + 'leaderboard/',
     })
 
 urlpatterns = [
-    path('', api_root, name='api_root'),
+    path('api/', api_root, name='api_root'),
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 ]
