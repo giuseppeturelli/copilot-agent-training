@@ -2,6 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Django: Runserver (0.0.0.0:8000)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/octofit-tracker/backend/manage.py",
+      "args": ["runserver", "0.0.0.0:8000"],
+      "django": true,
+      "cwd": "${workspaceFolder}/octofit-tracker/backend",
+      "env": {
+        "CODESPACE_NAME": "${env:CODESPACE_NAME}"
+      }
+    },
+    {
       "name": "Launch Django Backend",
       "type": "python",
       "request": "launch",
