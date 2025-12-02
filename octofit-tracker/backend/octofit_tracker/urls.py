@@ -31,13 +31,18 @@ router.register(r'leaderboard', LeaderboardViewSet, basename='leaderboard')
 @api_view(['GET'])
 def api_root(request):
     codespace_name = os.environ.get('CODESPACE_NAME')
+    if codespace_name:
+        base = f"https://{codespace_name}-8000.app.github.dev/api/"
+    else:
+        # Fallback to the current host (likely localhost) using http to avoid HTTPS cert issues locally
+        base = request.build_absolute_uri('/api/')
 
     return Response({
-        'users': f'https://{codespace_name}-8000.app.github.dev/api/users/',
-        'teams': f'https://{codespace_name}-8000.app.github.dev/api/teams/',
-        'activities': f'https://{codespace_name}-8000.app.github.dev/api/activities/',
-        'workouts': f'https://{codespace_name}-8000.app.github.dev/api/workouts/',
-        'leaderboard': f'https://{codespace_name}-8000.app.github.dev/api/leaderboard/',
+        'users': base + 'users/',
+        'teams': base + 'teams/',
+        'activities': base + 'activities/',
+        'workouts': base + 'workouts/',
+        'leaderboard': base + 'leaderboard/',
     })
 
 urlpatterns = [

@@ -10,7 +10,10 @@ export default function Workouts() {
   useEffect(() => {
     const load = async () => {
       try {
-        const endpoint = 'workouts/';
+        const codespace = process.env.REACT_APP_CODESPACE_NAME || '';
+        const endpoint = codespace
+          ? `https://${codespace}-8000.app.github.dev/api/workouts/`
+          : `${window.location.protocol}//${window.location.hostname}:8000/api/workouts/`;
         const results = await fetchJson(endpoint);
         console.log('Workouts component fetched:', results);
         setData(results);
@@ -54,7 +57,11 @@ export default function Workouts() {
               </button>
               <button type="button" className="btn btn-outline-secondary" onClick={async () => {
                 try {
-                  const refreshed = await fetchJson('workouts/');
+                  const codespace = process.env.REACT_APP_CODESPACE_NAME || '';
+                  const endpoint = codespace
+                    ? `https://${codespace}-8000.app.github.dev/api/workouts/`
+                    : `${window.location.protocol}//${window.location.hostname}:8000/api/workouts/`;
+                  const refreshed = await fetchJson(endpoint);
                   setData(refreshed);
                 } catch (err) {
                   console.error('Refresh error', err);

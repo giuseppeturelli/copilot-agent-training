@@ -10,7 +10,10 @@ export default function Teams() {
   useEffect(() => {
     const load = async () => {
       try {
-        const endpoint = 'teams/';
+        const codespace = process.env.REACT_APP_CODESPACE_NAME || '';
+        const endpoint = codespace
+          ? `https://${codespace}-8000.app.github.dev/api/teams/`
+          : `${window.location.protocol}//${window.location.hostname}:8000/api/teams/`;
         const results = await fetchJson(endpoint);
         console.log('Teams component fetched:', results);
         setData(results);
@@ -54,7 +57,11 @@ export default function Teams() {
               </button>
               <button type="button" className="btn btn-outline-secondary" onClick={async () => {
                 try {
-                  const refreshed = await fetchJson('teams/');
+                  const codespace = process.env.REACT_APP_CODESPACE_NAME || '';
+                  const endpoint = codespace
+                    ? `https://${codespace}-8000.app.github.dev/api/teams/`
+                    : `${window.location.protocol}//${window.location.hostname}:8000/api/teams/`;
+                  const refreshed = await fetchJson(endpoint);
                   setData(refreshed);
                 } catch (err) {
                   console.error('Refresh error', err);
