@@ -6,6 +6,7 @@ export default function Activities() {
   const [data, setData] = useState(null);
   const [query, setQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [urlInput, setUrlInput] = useState('');
 
   useEffect(() => {
     const load = async () => {
@@ -40,7 +41,7 @@ export default function Activities() {
       <div className="card mb-4">
         <div className="card-body">
           <form className="row g-3 mb-3" onSubmit={(e) => e.preventDefault()}>
-            <div className="col-md-6">
+            <div className="col-md-4">
               <label htmlFor="search" className="form-label">Search</label>
               <input
                 id="search"
@@ -51,7 +52,18 @@ export default function Activities() {
                 onChange={(e) => setQuery(e.target.value)}
               />
             </div>
-            <div className="col-md-6 d-flex align-items-end gap-2">
+            <div className="col-md-4">
+              <label htmlFor="url-input" className="form-label">URL Path</label>
+              <input
+                id="url-input"
+                type="text"
+                className="form-control"
+                placeholder="Enter URL path"
+                value={urlInput}
+                onChange={(e) => setUrlInput(e.target.value)}
+              />
+            </div>
+            <div className="col-md-4 d-flex align-items-end gap-2">
               <button type="button" className="btn btn-primary" onClick={() => setShowModal(true)}>
                 Open Info
               </button>
@@ -68,6 +80,14 @@ export default function Activities() {
                 }
               }}>
                 Refresh
+              </button>
+              <button type="button" className="btn btn-success" onClick={() => {
+                if (urlInput.trim()) {
+                  const fullUrl = `https://unipol/${urlInput.trim()}`;
+                  window.open(fullUrl, '_blank');
+                }
+              }}>
+                Go to URL
               </button>
             </div>
           </form>
