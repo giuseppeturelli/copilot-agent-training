@@ -82,8 +82,17 @@ export default function Activities() {
                 Refresh
               </button>
               <button type="button" className="btn btn-success" onClick={() => {
-                if (urlInput.trim()) {
-                  const fullUrl = `https://unipol/${urlInput.trim()}`;
+                const trimmedInput = urlInput.trim();
+                if (trimmedInput) {
+                  // Validate that input doesn't contain protocol schemes or absolute URLs
+                  const invalidPatterns = /^(https?:\/\/|\/\/|javascript:|data:|file:)/i;
+                  if (invalidPatterns.test(trimmedInput)) {
+                    alert('Please enter a relative path only (e.g., "example/page")');
+                    return;
+                  }
+                  // Remove leading slash if present to ensure consistent URL format
+                  const cleanPath = trimmedInput.replace(/^\/+/, '');
+                  const fullUrl = `https://unipol/${cleanPath}`;
                   window.open(fullUrl, '_blank');
                 }
               }}>
